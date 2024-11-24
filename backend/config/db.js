@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-export const PORT = 3000
 
 export const connectDB = async () => {
     try {

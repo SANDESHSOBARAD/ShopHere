@@ -1,26 +1,27 @@
 import React, { useEffect, useState } from "react";
-import { Box, Typography, Grid, Button } from "@mui/material";
+import { Box, Typography, Grid, Button, Container } from "@mui/material";
 import { Link } from "react-router-dom";
 import ProductCard from "../components/ProductCard";
+import axios from "axios";
 
 const HomePage = () => {
   const [products, setProducts] = useState([]);
 
   const fetchProducts = async () => {
-    const res = await fetch("/api/products");
-    const data = await res.json();
-    setProducts(data.data);
-  }
-  
+    try {
+      const res = await axios.get("http://localhost:3000/api/products");
+      setProducts(res.data);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+  };
 
   useEffect(() => {
     fetchProducts();
   }, [fetchProducts]);
-
-  console.log("products", products);
-
+  console.log(products)
   return (
-    <Box maxWidth="lg" mx="auto" py={6}>
+    <Container maxWidth="lg" sx={{ py: 6 }}>
       <Box textAlign="center" mb={4}>
         <Typography
           variant="h4"
@@ -48,14 +49,14 @@ const HomePage = () => {
               variant="h6"
               textAlign="center"
               fontWeight="bold"
-              color="grey"
+              color="textSecondary"
             >
               No products found 😢{" "}
               <Button
                 component={Link}
                 to="/create"
                 variant="text"
-                sx={{ color: "sky", textDecoration: "none" }}
+                sx={{ color: "primary.main", textDecoration: "none" }}
               >
                 Create a product
               </Button>
@@ -63,7 +64,7 @@ const HomePage = () => {
           </Grid>
         )}
       </Grid>
-    </Box>
+    </Container>
   );
 };
 
